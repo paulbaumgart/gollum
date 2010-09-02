@@ -70,7 +70,11 @@ module Gollum
     #
     # Returns the String name.
     def name
+<<<<<<< HEAD
       self.class.canonicalize_filename(filename)
+=======
+      filename.split('.')[0..-2].join('.')
+>>>>>>> 33aff5a... Remove replacement of spaces in page names with hyphens.
     end
 
     # Public: If the first element of a formatted page is an <h1> tag it can
@@ -230,7 +234,7 @@ module Gollum
     # Returns the String canonical name.
     def self.cname(name)
       name.respond_to?(:gsub)      ?
-        name.gsub(%r{[ /<>]}, '-') :
+        name.gsub(%r{[/<>]}, '-') :
         ''
     end
 
