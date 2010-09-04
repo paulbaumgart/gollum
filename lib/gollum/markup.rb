@@ -17,6 +17,7 @@ module Gollum
       @tagmap  = {}
       @codemap = {}
       @texmap  = {}
+      @check_page_links_for_presence = page.check_page_links_for_presence
     end
 
     # Render the content with Gollum wiki syntax on top of the file's own
@@ -288,12 +289,17 @@ module Gollum
       tag = if name =~ %r{^https?://} && parts[1].nil?
         %{<a href="#{name}">#{name}</a>}
       else
-        presence    = "absent"
-        link_name   = cname
-        page, extra = find_page_from_name(cname)
-        if page
-          link_name = Page.cname(page.name)
-          presence  = "present"
+        if @check_page_links_for_presence
+          presence    = "absent"
+          link_name   = cname
+          page, extra = find_page_from_name(cname)
+          if page
+            link_name = Page.cname(page.name)
+            presence  = "present"
+          end
+        else
+          link_name   = cname
+          presence    = "present"
         end
         link = ::File.join(@wiki.base_path, CGI.escape(link_name))
         %{<a class="internal #{presence}" href="#{link}#{extra}">#{name}</a>}

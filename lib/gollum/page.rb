@@ -56,6 +56,7 @@ module Gollum
     def initialize(wiki)
       @wiki = wiki
       @blob = nil
+      @check_page_links_for_presence = true
     end
 
     # Public: The on-disk filename of the page including extension.
@@ -117,6 +118,12 @@ module Gollum
     #
     # Returns the Blob.
     attr_reader :blob
+
+    # Public: Should links to other pages in the page contents
+    # be checked for presence? Getter/setter.
+    #
+    # Getter returns a boolean.
+    attr_accessor :check_page_links_for_presence
 
     # Public: The raw contents of the page.
     #
@@ -199,12 +206,15 @@ module Gollum
       map = @wiki.tree_map_for(self.version.id)
       while !dirs.empty?
         if page = find_page_in_tree(map, '_Footer', dirs.join('/'))
+          page.check_page_links_for_presence = false
           return page
         end
         dirs.pop
       end
 
-      find_page_in_tree(map, '_Footer', '')
+      page = find_page_in_tree(map, '_Footer', '')
+      page.check_page_links_for_presence = false
+      page
     end
 
     # Gets a Boolean determining whether this page is a historical version.  
