@@ -492,27 +492,9 @@ module Gollum
       @tree_cache.ref_map
     end
 
-<<<<<<< HEAD
-    # Finds a full listing of files and their blob SHA for a given ref.  Each
-    # listing is cached based on its actual commit SHA.
-    #
-    # ref - A String ref that is either a commit SHA or references one.
-    #
-    # Returns an Array of BlobEntry instances.
-    def tree_map_for(ref)
-      sha = @ref_map[ref] || ref
-      @tree_map[sha] || begin
-        real_sha              = @repo.git.rev_list({:max_count=>1}, ref)
-        @ref_map[ref]         = real_sha if real_sha != ref
-        @tree_map[real_sha] ||= parse_tree_for(real_sha)
-      end
-    rescue Grit::GitRuby::Repository::NoSuchShaFound
-      []
-=======
     # TreeCache wrapper method
     def tree_map
       @tree_cache.tree_map
->>>>>>> ee1cc68... abstract tree/ref caching into a new class, TreeCache
     end
 
     # TreeCache wrapper method
