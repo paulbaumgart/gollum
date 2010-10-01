@@ -45,7 +45,7 @@ module Gollum
     #
     # Returns the filtered String.
     def self.canonicalize_filename(filename)
-      filename.split('.')[0..-2].join('.').gsub('-', ' ')
+      filename.split('.')[0..-2].join('.')
     end
 
     # Public: Initialize a page.
@@ -71,11 +71,7 @@ module Gollum
     #
     # Returns the String name.
     def name
-<<<<<<< HEAD
       self.class.canonicalize_filename(filename)
-=======
-      filename.split('.')[0..-2].join('.')
->>>>>>> 33aff5a... Remove replacement of spaces in page names with hyphens.
     end
 
     # Public: If the first element of a formatted page is an <h1> tag it can
