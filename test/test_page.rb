@@ -13,7 +13,7 @@ context "Page" do
   end
 
   test "get existing page" do
-    page = @wiki.page('Bilbo Baggins')
+    page = @wiki.page('Bilbo-Baggins')
     assert_equal Gollum::Page, page.class
     assert page.raw_data =~ /^# Bilbo Baggins\n\nBilbo Baggins/
     assert page.formatted_data =~ /<h1>Bilbo Baggins<\/h1>\n\n<p>Bilbo Baggins/
@@ -23,16 +23,16 @@ context "Page" do
   end
 
   test "get existing page case insensitive" do
-    assert_equal @wiki.page('Bilbo Baggins').path, @wiki.page('bilbo baggins').path
+    assert_equal @wiki.page('Bilbo-Baggins').path, @wiki.page('bilbo-baggins').path
   end
 
   test "get nested page" do
-    page = @wiki.page('Eye Of Sauron')
+    page = @wiki.page('Eye-Of-Sauron')
     assert_equal 'Mordor/Eye-Of-Sauron.md', page.path
   end
 
   test "page versions" do
-    page = @wiki.page('Bilbo Baggins')
+    page = @wiki.page('Bilbo-Baggins')
     assert_equal ["f25eccd98e9b667f9e22946f3e2f945378b8a72d", "5bc1aaec6149e854078f1d0f8b71933bbc6c2e43"],
       page.versions.map { |v| v.id }
   end
@@ -50,7 +50,7 @@ context "Page" do
   end
 
   test "specific page version" do
-    page = @wiki.page('Bilbo Baggins', 'fbabba862dfa7ac35b39042dd4ad780c9f67b8cb')
+    page = @wiki.page('Bilbo-Baggins', 'fbabba862dfa7ac35b39042dd4ad780c9f67b8cb')
     assert_equal 'fbabba862dfa7ac35b39042dd4ad780c9f67b8cb', page.version.id
   end
 
@@ -59,7 +59,7 @@ context "Page" do
   end
 
   test "no version match" do
-    assert_nil @wiki.page('Bilbo Baggins', 'I do not exist')
+    assert_nil @wiki.page('Bilbo-Baggins', 'I do not exist')
   end
 
   test "no ext match" do
@@ -68,20 +68,20 @@ context "Page" do
 
   test "cname" do
     assert_equal "Foo", Gollum::Page.cname("Foo")
-    assert_equal "Foo-Bar", Gollum::Page.cname("Foo Bar")
-    assert_equal "Foo---Bar", Gollum::Page.cname("Foo / Bar")
+    assert_equal "Foo Bar", Gollum::Page.cname("Foo Bar")
+    assert_equal "Foo - Bar", Gollum::Page.cname("Foo / Bar")
     assert_equal "José", Gollum::Page.cname("José")
     assert_equal "モルドール", Gollum::Page.cname("モルドール")
   end
 
   test "title from filename with normal contents" do
-    page = @wiki.page('Bilbo Baggins')
+    page = @wiki.page('Bilbo-Baggins')
     assert_equal 'Bilbo Baggins', page.title
   end
 
   test "title from filename with html contents" do
-    page = @wiki.page('My <b>Precious', '0ed8cbe0a25235bd867e65193c7d837c66b328ef')
-    assert_equal 'My Precious', page.title
+    page = @wiki.page('My-<b>Precious', '0ed8cbe0a25235bd867e65193c7d837c66b328ef')
+    assert_equal 'My-Precious', page.title
   end
 
   test "title from h1 with normal contents" do
@@ -90,7 +90,7 @@ context "Page" do
   end
 
   test "title from h1 with html contents" do
-    page = @wiki.page('Eye Of Sauron')
+    page = @wiki.page('Eye-Of-Sauron')
     assert_equal "Eye Of Sauron", page.title
   end
 
@@ -101,7 +101,7 @@ context "Page" do
   end
 
   test "nested footer" do
-    footer = @wiki.page('Eye Of Sauron').footer
+    footer = @wiki.page('Eye-Of-Sauron').footer
     assert_equal "Ones does not simply **walk** into Mordor!\n", footer.raw_data
     assert_equal "Mordor/_Footer.md", footer.path
   end

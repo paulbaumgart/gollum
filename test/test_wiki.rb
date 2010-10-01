@@ -124,7 +124,7 @@ context "Wiki page writing" do
   end
 
   test "is not allowed to overwrite file" do
-    @wiki.write_page("Abc-Def", :markdown, "# Gollum", commit_details)
+    @wiki.write_page("Abc Def", :markdown, "# Gollum", commit_details)
     assert_raises Gollum::DuplicatePageError do
       @wiki.write_page("ABC DEF", :textile,  "# Gollum", commit_details)
     end
@@ -209,16 +209,16 @@ context "Wiki page writing" do
 
   test "delete nested page" do
     index = @wiki.repo.index
-    index.add("greek/Bilbo-Baggins.md", "hi")
+    index.add("greek/Bilbo Baggins.md", "hi")
     index.add("Gollum.md", "hi")
     index.commit("Add alpha.jpg")
 
-    page = @wiki.page("Bilbo-Baggins")
+    page = @wiki.page("Bilbo Baggins")
     assert page
     @wiki.delete_page(page, commit_details)
 
     assert_equal 2, @wiki.repo.commits.size
-    assert_nil @wiki.page("Bilbo-Baggins")
+    assert_nil @wiki.page("Bilbo Baggins")
 
     assert @wiki.page("Gollum")
   end
@@ -237,45 +237,45 @@ context "Wiki sync with working directory" do
 
   test "write a page" do
     @wiki.write_page("New Page", :markdown, "Hi", commit_details)
-    assert_equal "Hi", File.read(File.join(@path, "New-Page.md"))
+    assert_equal "Hi", File.read(File.join(@path, "New Page.md"))
   end
 
   test "update a page with same name and format" do
     @wiki.write_page("New Page", :markdown, "Hi", commit_details)
     page = @wiki.page("New Page")
     @wiki.update_page(page, page.name, page.format, "Bye", commit_details)
-    assert_equal "Bye", File.read(File.join(@path, "New-Page.md"))
+    assert_equal "Bye", File.read(File.join(@path, "New Page.md"))
   end
 
   test "update a page with different name and same format" do
     @wiki.write_page("New Page", :markdown, "Hi", commit_details)
     page = @wiki.page("New Page")
     @wiki.update_page(page, "New Page 2", page.format, "Bye", commit_details)
-    assert_equal "Bye", File.read(File.join(@path, "New-Page-2.md"))
-    assert !File.exist?(File.join(@path, "New-Page.md"))
+    assert_equal "Bye", File.read(File.join(@path, "New Page 2.md"))
+    assert !File.exist?(File.join(@path, "New Page.md"))
   end
 
   test "update a page with same name and different format" do
     @wiki.write_page("New Page", :markdown, "Hi", commit_details)
     page = @wiki.page("New Page")
     @wiki.update_page(page, page.name, :textile, "Bye", commit_details)
-    assert_equal "Bye", File.read(File.join(@path, "New-Page.textile"))
-    assert !File.exist?(File.join(@path, "New-Page.md"))
+    assert_equal "Bye", File.read(File.join(@path, "New Page.textile"))
+    assert !File.exist?(File.join(@path, "New Page.md"))
   end
 
   test "update a page with different name and different format" do
     @wiki.write_page("New Page", :markdown, "Hi", commit_details)
     page = @wiki.page("New Page")
     @wiki.update_page(page, "New Page 2", :textile, "Bye", commit_details)
-    assert_equal "Bye", File.read(File.join(@path, "New-Page-2.textile"))
-    assert !File.exist?(File.join(@path, "New-Page.md"))
+    assert_equal "Bye", File.read(File.join(@path, "New Page 2.textile"))
+    assert !File.exist?(File.join(@path, "New Page.md"))
   end
 
   test "delete a page" do
     @wiki.write_page("New Page", :markdown, "Hi", commit_details)
     page = @wiki.page("New Page")
     @wiki.delete_page(page, commit_details)
-    assert !File.exist?(File.join(@path, "New-Page.md"))
+    assert !File.exist?(File.join(@path, "New Page.md"))
   end
 
   teardown do

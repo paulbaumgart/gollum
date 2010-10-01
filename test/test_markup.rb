@@ -67,7 +67,7 @@ context "Markup" do
     page = @wiki.page("Bilbo Baggins")
     output = page.formatted_data
     assert_match /class="internal present"/, output
-    assert_match /href="\/Bilbo-Baggins"/,   output
+    assert_match /href="\/Bilbo\+Baggins"/,   output
     assert_match /\>Bilbo Baggins\</,        output
   end
 
@@ -87,7 +87,7 @@ context "Markup" do
     page = @wiki.page("Tolkien")
     output = page.formatted_data
     assert_match /class="internal absent"/,         output
-    assert_match /href="\/J\.\-R\.\-R\.\-Tolkien"/, output
+    assert_match /href="\/J\.\+R\.\+R\.\+Tolkien"/, output
     assert_match /\>J\. R\. R\. Tolkien\</,         output
   end
 
@@ -100,7 +100,7 @@ context "Markup" do
       page = @wiki.page(name)
       output = page.formatted_data
       assert_match /class="internal present"/,        output
-      assert_match /href="\/wiki\/Bilbo-Baggins-\d"/, output
+      assert_match /href="\/wiki\/Bilbo\+Baggins\+\d"/, output
       assert_match /\>Bilbo Baggins \d\</,            output
     end
   end
@@ -110,7 +110,7 @@ context "Markup" do
     page   = @wiki.page('Precious #1')
     output = page.formatted_data
     assert_match /class="internal present"/, output
-    assert_match /href="\/Precious-%231"/,   output
+    assert_match /href="\/Precious\+%231"/,   output
   end
 
   test "page link with extra #" do
@@ -160,7 +160,7 @@ context "Markup" do
     @wiki = Gollum::Wiki.new(@path, :base_path => '/wiki')
     index = @wiki.repo.index
     index.add("alpha.jpg", "hi")
-    index.add("Bilbo-Baggins.md", "a [[alpha.jpg]] [[a | alpha.jpg]] b")
+    index.add("Bilbo Baggins.md", "a [[alpha.jpg]] [[a | alpha.jpg]] b")
     index.commit("Add alpha.jpg")
 
     page = @wiki.page("Bilbo Baggins")
@@ -171,7 +171,7 @@ context "Markup" do
     @wiki = Gollum::Wiki.new(@path, :base_path => '/wiki')
     index = @wiki.repo.index
     index.add("greek/alpha.jpg", "hi")
-    index.add("greek/Bilbo-Baggins.md", "a [[alpha.jpg]] [[a | alpha.jpg]] b")
+    index.add("greek/Bilbo Baggins.md", "a [[alpha.jpg]] [[a | alpha.jpg]] b")
     index.commit("Add alpha.jpg")
 
     page = @wiki.page("Bilbo Baggins")
@@ -271,7 +271,7 @@ context "Markup" do
   test "file link with relative path" do
     index = @wiki.repo.index
     index.add("greek/alpha.jpg", "hi")
-    index.add("greek/Bilbo-Baggins.md", "a [[Alpha|alpha.jpg]] b")
+    index.add("greek/Bilbo Baggins.md", "a [[Alpha|alpha.jpg]] b")
     index.commit("Add alpha.jpg")
 
     page = @wiki.page("Bilbo Baggins")
@@ -281,7 +281,7 @@ context "Markup" do
 
   test "file link with external path" do
     index = @wiki.repo.index
-    index.add("greek/Bilbo-Baggins.md", "a [[Alpha|http://example.com/alpha.jpg]] b")
+    index.add("greek/Bilbo Baggins.md", "a [[Alpha|http://example.com/alpha.jpg]] b")
     index.commit("Add alpha.jpg")
 
     page = @wiki.page("Bilbo Baggins")
@@ -301,7 +301,7 @@ context "Markup" do
              "<span class=\"mi\">1</span>\n</pre>\n</div>\n\n<p>b</p>"
 
     index = @wiki.repo.index
-    index.add("Bilbo-Baggins.md", content)
+    index.add("Bilbo Baggins.md", content)
     index.commit("Add alpha.jpg")
 
     page = @wiki.page("Bilbo Baggins")
@@ -316,7 +316,7 @@ context "Markup" do
              "<span class=\"mi\">1</span>\n</pre>\n</div>\n\n<p>b</p>"
 
     index = @wiki.repo.index
-    index.add("Bilbo-Baggins.md", content)
+    index.add("Bilbo Baggins.md", content)
     index.commit("Add alpha.jpg")
 
     page = @wiki.page("Bilbo Baggins")
@@ -395,7 +395,7 @@ context "Markup" do
 
   def compare(content, output, ext = "md", regexes = [])
     index = @wiki.repo.index
-    index.add("Bilbo-Baggins.#{ext}", content)
+    index.add("Bilbo Baggins.#{ext}", content)
     index.commit("Add baggins")
 
     page = @wiki.page("Bilbo Baggins")
@@ -410,7 +410,7 @@ context "Markup" do
   def relative_image(content, output)
     index = @wiki.repo.index
     index.add("greek/alpha.jpg", "hi")
-    index.add("greek/Bilbo-Baggins.md", content)
+    index.add("greek/Bilbo Baggins.md", content)
     index.commit("Add alpha.jpg")
 
     @wiki.clear_cache
